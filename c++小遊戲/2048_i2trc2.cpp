@@ -10,19 +10,17 @@ void SetColor(int color = 7)
   SetConsoleTextAttribute(hConsole, color);
 }
 
-int dirline[4]={1,0,-1,0}; //¦Cªº¤è¦V
-int dircolumn[4]={0,1,0,-1};//¦æªº¤è¦V 
-int board[4][4]; //¤è°}¤j¤p 
+int dirline[4]={1,0,-1,0}; //åˆ—çš„æ–¹å‘
+int dircolumn[4]={0,1,0,-1};//è¡Œçš„æ–¹å‘ 
+int board[4][4]; //æ–¹é™£å¤§å° 
 int value=0;
 bool is_add[4][4]={0};
 
-
-pair<int,int> position(){	//ÀH¾÷¿ï¦æ¦C¥Í¦¨ 
+pair<int,int> position(){	//éš¨æ©Ÿé¸è¡Œåˆ—ç”Ÿæˆ 
 	int occupied=1,line,column;
 	while(occupied){
 		line=rand()%4;
 		column=rand()%4;
-		
 		if(board[line][column]==0) occupied=0;
 	}
 	return make_pair(line,column);
@@ -30,11 +28,11 @@ pair<int,int> position(){	//ÀH¾÷¿ï¦æ¦C¥Í¦¨
 }
 
 void add_price(){
-	pair<int,int> pos=position();	//ÀH¾÷¦æ¦C 
+	pair<int,int> pos=position();	//éš¨æ©Ÿè¡Œåˆ— 
 	board[pos.first][pos.second]=2;
 }
 
-void newgame(){ //ªì©l¤Æ¤è°} 
+void newgame(){ //åˆå§‹åŒ–æ–¹é™£ 
 	for(int i=0;i<4;++i){
 		for(int j=0;j<4;++j)
 			board[i][j]=0;
@@ -42,7 +40,7 @@ void newgame(){ //ªì©l¤Æ¤è°}
 	add_price();
 }
 
-void menu(){	//ªì©l¤Æ 
+void menu(){	//åˆå§‹åŒ– 
 	system("cls");
 	for(int i=0;i<4;++i){
 		for(int j=0;j<4;++j){
@@ -53,18 +51,16 @@ void menu(){	//ªì©l¤Æ
 		}
 		cout << "\n";
 	}
-
 	cout << "-------------------\n";
 	cout << "n:new game,  q:quit\n";
 	cout << "w:up,  s:down,  a: left,  d:right\n";
 	cout << "score: " << value <<"\n";
-	
 }
 
 bool can_move(int line,int column,int nextline,int nextcolumn){
 	if(nextline<0 || nextcolumn<0 || nextline>=4 || nextcolumn>=4
 		|| board[line][column]!=board[nextline][nextcolumn] && board[nextline][nextcolumn]!=0)
-		return false; //i,j,nextI,nextJ¦b½d³ò¥~ || ¤£¯à¦X¨Ö 
+		return false; //i,j,nextI,nextJåœ¨ç¯„åœå¤– || ä¸èƒ½åˆä½µ 
 	return true;
 }
 
@@ -96,14 +92,12 @@ void applymove(int dir){
 		movepossible=0;
 		for(int i=startline;i>=0 && i<4;i+=stepline){
 			for(int j=startcolumn;j>=0 && j<4;j+=stepcolumn){
-
 				int nextI=i+dirline[dir],nextJ=j+dircolumn[dir];
 				if(board[i][j] && can_move(i,j,nextI,nextJ) && have_move(i,j,nextI,nextJ)){
 					if(board[nextI][nextJ]){
 						is_add[nextI][nextJ]=1;
 						value+=board[i][j];
 					}
-					
 					board[nextI][nextJ]+=board[i][j];
 					board[i][j]=0;
 					movepossible=can_add_price=1;
@@ -112,7 +106,6 @@ void applymove(int dir){
 		}
 	}while(movepossible);
 	if(can_add_price) add_price();
-	
 	is_add_zero();
 } 
 
@@ -132,9 +125,8 @@ void color(){
 }
 
 int main() {
-	
 	srand(time(0));
-	char cmd_to_dir[128]; //wsadªº©R¥O
+	char cmd_to_dir[128]; //wsad
 	cmd_to_dir['s']=0; 
 	cmd_to_dir['d']=1;
 	cmd_to_dir['w']=2;
@@ -143,13 +135,11 @@ int main() {
 	string t;
 	color();
 	while(true){
-		cout << "¿é¤Ji2trc2¶}©l¹CÀ¸: ";
+		cout << "è¼¸å…¥i2trc2é–‹å§‹éŠæˆ²: ";
 		cin >> t;
-		
 		if(t=="i2trc2")  break;
-		else cout << "¿é¤J¿ù»~\n";
+		else cout << "è¼¸å…¥éŒ¯èª¤\n";
 	}
-	
 	newgame();
 	while(true){
 		menu();
@@ -167,6 +157,5 @@ int main() {
 		}
 	}
 	
-	//system("PAUSE");
 	return 0;
 }
